@@ -282,7 +282,7 @@ int s32_el3_mmu_fixup(void)
 	const unsigned long code_start = BL_CODE_BASE;
 	const unsigned long code_size = BL_CODE_END - BL_CODE_BASE;
 	const unsigned long rw_start = BL2_RW_START;
-	const unsigned long rw_size = BL_END - BL2_RW_START;
+	const unsigned long rw_size = BL_END - BL2_RW_START + 0xC0000; /* fill gap between BL_END(0x34340000) and 0x34400000 which contains bl31, bl33 */
 	mmap_region_t regions[] = {
 		{
 			.base_pa = code_start,

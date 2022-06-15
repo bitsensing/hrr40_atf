@@ -127,6 +127,14 @@
 		*(tzfw_normal_stacks)			\
 		__STACKS_END__ = .;			\
 	}
+
+#define STACK_SECTION_LOAD				\
+	stacks : {					\
+		__STACKS_START__ = .;			\
+		*(tzfw_normal_stacks)			\
+		__STACKS_END__ = .;			\
+	}
+
 #endif
 
 /*
@@ -202,6 +210,18 @@
 		__BSS_END__ = .;			\
 	}
 
+
+#define BSS_SECTION_LOAD				\
+	.bss : ALIGN(BSS_ALIGN) {			\
+		__BSS_START__ = .;			\
+		*(SORT_BY_ALIGNMENT(.bss*))		\
+		*(COMMON)				\
+		BAKERY_LOCK_NORMAL			\
+		PMF_TIMESTAMP				\
+		BASE_XLAT_TABLE_BSS			\
+		__BSS_END__ = .;			\
+	}
+
 /*
  * The xlat_table section is for full, aligned page tables (4K).
  * Removing them from .bss avoids forcing 4K alignment on
@@ -210,6 +230,12 @@
  */
 #define XLAT_TABLE_SECTION				\
 	xlat_table (NOLOAD) : {				\
+		*(xlat_table)				\
+	}
+
+
+#define XLAT_TABLE_SECTION_LOAD				\
+	xlat_table : {					\
 		*(xlat_table)				\
 	}
 

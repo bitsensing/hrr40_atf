@@ -154,11 +154,13 @@ static int compound2clkid(uint32_t scmi_clk_id, uint32_t *clk_id)
 	switch (scmi_clk_id) {
 	case S32GEN1_SCMI_CLK_GMAC0_RX_SGMII:
 	case S32GEN1_SCMI_CLK_GMAC0_RX_RGMII:
+	case S32GEN1_SCMI_CLK_GMAC0_RX_MII:
 		if (clk_id)
 			*clk_id = S32GEN1_CLK_GMAC0_RX;
 		break;
 	case S32GEN1_SCMI_CLK_GMAC0_TX_SGMII:
 	case S32GEN1_SCMI_CLK_GMAC0_TX_RGMII:
+	case S32GEN1_SCMI_CLK_GMAC0_TX_MII:
 		if (clk_id)
 			*clk_id = S32GEN1_CLK_GMAC0_TX;
 		break;
@@ -169,8 +171,6 @@ static int compound2clkid(uint32_t scmi_clk_id, uint32_t *clk_id)
 	case S32GEN1_SCMI_CLK_SERDES_PAD_REF:
 	case S32GEN1_SCMI_CLK_GMAC0_RX_RMII:
 	case S32GEN1_SCMI_CLK_GMAC0_TX_RMII:
-	case S32GEN1_SCMI_CLK_GMAC0_RX_MII:
-	case S32GEN1_SCMI_CLK_GMAC0_TX_MII:
 		if (clk_id)
 			*clk_id = S32GEN1_SCMI_NOT_IMPLEMENTED_CLK;
 		break;
@@ -208,6 +208,8 @@ static int set_gmac_rx_parent(struct clk *clk)
 		rx_id = S32GEN1_CLK_SERDES0_LANE0_CDR;
 	} else if (clk_id == S32GEN1_SCMI_CLK_GMAC0_RX_RGMII) {
 		rx_id = S32GEN1_CLK_GMAC0_EXT_RX;
+	} else if (clk_id == S32GEN1_SCMI_CLK_GMAC0_RX_MII) {
+		rx_id = S32GEN1_CLK_GMAC0_EXT_RX;
 	} else {
 		ERROR("Invalid GMAC RX mode\n");
 		return -EINVAL;
@@ -228,6 +230,8 @@ static int set_gmac_tx_parent(struct clk *clk)
 		tx_id = S32GEN1_CLK_PERIPH_PLL_PHI5;
 	} else if (clk_id == S32GEN1_SCMI_CLK_GMAC0_TX_SGMII) {
 		tx_id = S32GEN1_CLK_SERDES0_LANE0_TX;
+	} else if (clk_id == S32GEN1_SCMI_CLK_GMAC0_TX_MII) {
+		tx_id = S32GEN1_CLK_GMAC0_EXT_TX;
 	} else {
 		ERROR("Invalid GMAC TX mode\n");
 		return -EINVAL;

@@ -10,6 +10,7 @@
 #include "s32_bl_common.h"
 #include "s32_clocks.h"
 #include "clk/clk.h"
+#include <lib/mmio.h>
 
 void bl31_platform_setup(void)
 {
@@ -20,5 +21,8 @@ void bl31_platform_setup(void)
 
 	s32_enable_a53_clock();
 	dt_clk_init();
+
+	// Enable CGM0_MUX10 divider
+	mmio_write_32((uintptr_t)(MC_CGM0_BASE_ADDR + 0x588), 0x80000000);
 }
 
